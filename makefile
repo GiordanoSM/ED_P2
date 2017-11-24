@@ -1,20 +1,16 @@
-LFLAGS:= -W -Wall -ggdb -lm
-CFLAGS:= -W -Wall -ggdb	
+CC = gcc
+CFLAGS = -W -Wall
+DEPS = IO.h Graph.h Prim_prog.h Dijkstra_prog.h Freq_prog.h
+OBJ = main.o IO.o Graph.o Prim_prog.o Dijkstra_prog.o Freq_prog.o
 
-main: main.c grafo.o lista_adjacencia.o prim_mst.o entrada.o
-	gcc -o main main.c grafo.o lista_adjacencia.o prim_mst.o entrada.o $(LFLAGS)
+Projeto_ED_2: $(OBJ)
+	$(CC) -g -o $@ $^ $(CFLAGS)
 
-grafo.o: grafo.c grafo.h lista_adjacencia.c
-	gcc -c grafo.c lista_adjacencia.c $(LFLAGS)
+%.o: %.c $(DEPS)
+	$(CC) -g -o $@ -c $< $(CFLAGS)
 
-lista_adjacencia.o: lista_adjacencia.c lista_adjacencia.h
-	gcc -c lista_adjacencia.c $(CFLAGS)
-
-prim_mst.o: prim_mst.c prim_mst.h lista_adjacencia.c
-	gcc -c prim_mst.c lista_adjacencia.c $(LFLAGS)
-
-entrada.o: entrada.c entrada.h lista_adjacencia.c grafo.c
-	gcc -c entrada.c lista_adjacencia.c grafo.c $(LFLAGS)
+.PHONY: clean
 
 clean: 
-	rm -f *.o main
+	rm -rf *.o
+
